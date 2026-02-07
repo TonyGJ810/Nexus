@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+:root {
+  --background: #030712;
+  --foreground: #e4e4e7;
+  --card-bg: rgba(9, 9, 11, 0.8);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --accent-start: #06b6d4;
+  --accent-end: #8b5cf6;
+  --neon-glow: rgba(6, 182, 212, 0.35);
+  --muted: #71717a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-space-grotesk);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+/* Títulos: Space Grotesk + tracking moderno */
+h1, h2, h3, .font-display {
+  font-family: var(--font-space-grotesk), var(--font-sans), system-ui, sans-serif;
+  letter-spacing: -0.025em;
+}
+
+/* Cards: Zinc 950 80% + borde sutil */
+.glass {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+}
+
+.card-premium {
+  background: rgba(9, 9, 11, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Acentos: gradiente Cyan → Violeta */
+.gradient-accent {
+  background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Neon text glow (suave) */
+.neon-text {
+  text-shadow: 0 0 24px var(--neon-glow);
+}
+
+/* Hero / gradient border */
+.gradient-border {
+  position: relative;
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+}
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Botón glow (sombra de color suave) */
+.btn-glow {
+  box-shadow: 0 0 24px rgba(6, 182, 212, 0.25), 0 0 48px rgba(139, 92, 246, 0.15);
+}
+
+/* Overlay degradado sobre imágenes para legibilidad */
+.image-overlay {
+  background: linear-gradient(to top, rgba(3, 7, 18, 0.95) 0%, rgba(3, 7, 18, 0.4) 50%, transparent 100%);
+}
+
+/* Mask para hero de detalle: imagen se funde con negro */
+.hero-mask {
+  mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 85%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 85%);
+}
