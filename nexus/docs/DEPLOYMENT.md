@@ -46,11 +46,25 @@ git push -u origin main
 
 ---
 
+## Si ves "404 NOT_FOUND" en Vercel
+
+Casi siempre es porque **Vercel está construyendo desde la raíz del repo** en lugar de la carpeta donde está la app.
+
+1. En Vercel: **tu proyecto** → **Settings** → **General**.
+2. En **Root Directory** haz clic en **Edit**.
+3. Escribe **`nexus`** (solo esa carpeta, sin barra final).
+4. Guarda (**Save**).
+5. Ve a **Deployments** → en el último despliegue → **⋯** → **Redeploy** (sin cambiar nada).
+
+Tras el nuevo despliegue, la página principal debería cargar. Si sigue fallando, revisa la pestaña **Building** del último deployment por si el build terminó con error.
+
+---
+
 ## Resumen rápido
 
 | Dónde        | Qué hacer |
 |-------------|-----------|
 | GitHub      | Subir código sin `.env` / `.env.local`. |
-| Vercel      | Root Directory = **nexus**. |
+| Vercel      | Root Directory = **nexus** (obligatorio para evitar 404). |
 | Vercel      | Añadir `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY`. |
 | Supabase    | (Opcional) Site URL / Redirect URLs con la URL de Vercel. |

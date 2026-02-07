@@ -8,11 +8,12 @@ import { EventsGrid } from "@/components/EventsGrid";
 
 export default async function HomePage() {
   const supabase = await createClient();
-  const { data: events = [] } = await supabase
+  const { data } = await supabase
     .from("events")
     .select("*")
     .order("date", { ascending: true });
 
+  const events = data ?? [];
   const featured = events[0];
   const rest = events.slice(1, 7);
 
