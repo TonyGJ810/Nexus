@@ -24,24 +24,35 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
+    let cancelled = false;
     (async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        router.replace("/login");
-        return;
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (cancelled) return;
+        if (!user) {
+          router.replace("/login");
+          return;
+        }
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", user.id)
+          .single();
+        if (cancelled) return;
+        if (profile?.role !== "admin") {
+          router.replace("/");
+          return;
+        }
+        await refresh();
+        if (!cancelled) setLoading(false);
+      } catch {
+        if (!cancelled) {
+          setLoading(false);
+          router.replace("/");
+        }
       }
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", user.id)
-        .single();
-      if (profile?.role !== "admin") {
-        router.replace("/");
-        return;
-      }
-      await refresh();
-      setLoading(false);
     })();
+    return () => { cancelled = true; };
   }, [router, supabase.auth]);
 
   if (loading) {

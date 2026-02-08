@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AuthNav } from "@/components/AuthNav";
 import { CartNav } from "@/components/CartNav";
+import { AdminNavLink } from "@/components/AdminNavLink";
 
 export function Navbar() {
   return (
@@ -23,12 +23,7 @@ export function Navbar() {
               Eventos
             </Button>
           </Link>
-          <Link href="/admin">
-            <Button variant="ghost" size="sm" type="button" className="gap-1.5">
-              <LayoutDashboard className="h-4 w-4" />
-              Admin
-            </Button>
-          </Link>
+          <AdminNavLink />
           <CartNav />
           <AuthNav />
         </div>
