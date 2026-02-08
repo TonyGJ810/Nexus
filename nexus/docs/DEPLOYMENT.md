@@ -46,6 +46,25 @@ git push -u origin main
 
 ---
 
+## Si Vercel no detecta los cambios del repo
+
+1. **Comprueba la rama en Vercel**  
+   **Settings** → **Git** → **Production Branch**. Debe ser **main** (o la rama a la que haces `git push`). Si pone otra (por ejemplo `master`), cámbiala a **main** y guarda.
+
+2. **Redeploy manual (solución rápida)**  
+   **Deployments** → en el último deployment → **⋯** (tres puntos) → **Redeploy**. Elige **Redeploy with existing Build Cache** si quieres ir más rápido, o sin cache si quieres forzar un build limpio. Así Vercel vuelve a construir con el código actual del repo.
+
+3. **Comprueba que el repo es el correcto**  
+   **Settings** → **Git** → **Connected Git Repository**. Debe ser `TonyGJ810/Nexus` (o tu usuario/repo). Si está conectado a otro repo, desconecta y vuelve a importar el correcto.
+
+4. **Permisos de GitHub**  
+   Si Vercel no tiene acceso al repo: [vercel.com/account](https://vercel.com/account) → **Integrations** → **GitHub** → comprueba que el repo **Nexus** está autorizado. Si no, edita la integración y marca el repo.
+
+5. **Webhooks**  
+   En GitHub: **Tu repo** → **Settings** → **Webhooks**. Debería haber un webhook de Vercel. Si no existe o da error, en Vercel **Settings** → **Git** puedes ver un botón para reconectar; a veces **Disconnect** y volver a **Connect** al repo arregla la detección de pushes.
+
+---
+
 ## Si ves "404 NOT_FOUND" en Vercel
 
 Casi siempre es porque **Vercel está construyendo desde la raíz del repo** en lugar de la carpeta donde está la app.

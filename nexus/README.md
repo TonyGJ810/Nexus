@@ -1,6 +1,6 @@
 # NEXUS – Boletos para eventos premium
 
-Plataforma de venta de boletos para eventos. Next.js (App Router), TypeScript, Tailwind CSS, Supabase.
+Plataforma de venta de boletos para eventos. Next.js (App Router), TypeScript, Tailwind CSS, Supabase
 
 ## Desarrollo local
 
