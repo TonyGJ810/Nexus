@@ -5,6 +5,8 @@ import { Navbar } from "@/components/Navbar";
 import { ToastProvider } from "@/components/ui/toast";
 import { CartProvider } from "@/context/CartContext";
 
+export const dynamic = "force-dynamic";
+
 const spaceGrotesk = localFont({
   src: "./fonts/Space_Grotesk/SpaceGrotesk-VariableFont_wght.ttf",
   variable: "--font-space-grotesk",
