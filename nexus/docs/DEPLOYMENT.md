@@ -65,17 +65,23 @@ git push -u origin main
 
 ---
 
-## Si ves "404 NOT_FOUND" en Vercel
+## Si ves "404 NOT_FOUND" al entrar a la página
 
-Casi siempre es porque **Vercel está construyendo desde la raíz del repo** en lugar de la carpeta donde está la app.
+Esa pantalla es de **Vercel**, no de tu app: significa que no encuentra nada que servir en esa URL.
 
-1. En Vercel: **tu proyecto** → **Settings** → **General**.
-2. En **Root Directory** haz clic en **Edit**.
-3. Escribe **`nexus`** (solo esa carpeta, sin barra final).
-4. Guarda (**Save**).
-5. Ve a **Deployments** → en el último despliegue → **⋯** → **Redeploy** (sin cambiar nada).
+1. **Root Directory (lo más importante)**  
+   **Settings** → **General** → **Root Directory** → **Edit** → escribe **`nexus`** (sin barra) → **Save**.  
+   Si aquí está vacío o en otra carpeta, Vercel construye desde la raíz del repo y no encuentra la app Next.js, y al entrar sale 404.
 
-Tras el nuevo despliegue, la página principal debería cargar. Si sigue fallando, revisa la pestaña **Building** del último deployment por si el build terminó con error.
+2. **Redeploy después de cambiar Root Directory**  
+   **Deployments** → en el último deployment → **⋯** → **Redeploy**.  
+   Sin un redeploy, el cambio de Root Directory no se aplica al despliegue actual.
+
+3. **Comprobar la URL que abres**  
+   En **Deployments**, el que esté en verde (Ready) tiene un enlace tipo `nexus-xxx.vercel.app`. Abre **ese** enlace (o el dominio que tengas asignado al proyecto). No uses una URL antigua o de otro proyecto.
+
+4. **Si ya tienes Root Directory = nexus**  
+   Prueba **Redeploy** del último deployment. A veces un redeploy limpia el estado y la app empieza a servirse bien.
 
 ---
 
