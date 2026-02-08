@@ -1,16 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { LogIn, LogOut } from "lucide-react";
 
 export function AuthNav() {
   const [user, setUser] = useState<{ email?: string } | null>(null);
+  const configured = isSupabaseConfigured();
   const supabase = createClient();
 
   useEffect(() => {
+    if (!configured) return;
     supabase.auth.getUser().then(({ data: { user: u } }) => setUser(u ?? null));
     const {
       data: { subscription },
@@ -18,7 +20,7 @@ export function AuthNav() {
       setUser(session?.user ?? null)
     );
     return () => subscription.unsubscribe();
-  }, [supabase.auth]);
+  }, [configured, supabase.auth]);
 
   async function signOut() {
     await supabase.auth.signOut();

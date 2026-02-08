@@ -30,9 +30,10 @@ git push -u origin main
    - **Output Directory:** se deja por defecto.
    - **Install Command:** `npm install` (por defecto).
 
-5. **Environment Variables:** antes de desplegar, añade:
+5. **Environment Variables (obligatorias para auth y datos):** antes de desplegar, añade:
    - `NEXT_PUBLIC_SUPABASE_URL` → URL de tu proyecto Supabase (ej. `https://xxxx.supabase.co`).
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` → Clave anónima ( pública ) de Supabase (Project Settings → API).
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` → Clave anónima (pública) de Supabase (Project Settings → API).  
+   Si no están definidas, la app puede cargar pero login y datos no funcionarán. Si ves en consola "supabaseUrl is required", añade estas variables en **Settings → Environment Variables** y haz un **Redeploy** (las `NEXT_PUBLIC_*` se inyectan en el build).
 
 6. Pulsa **Deploy**.
 
