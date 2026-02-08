@@ -11,12 +11,14 @@ const spaceGrotesk = localFont({
   src: "./fonts/Space_Grotesk/SpaceGrotesk-VariableFont_wght.ttf",
   variable: "--font-space-grotesk",
   display: "swap",
+  preload: false,
 });
 
 const inter = localFont({
   src: "./fonts/Inter/Inter-VariableFont_opsz,wght.ttf",
   variable: "--font-inter",
   display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
