@@ -23,7 +23,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     message: "",
     type: "success",
   });
-  const timeoutRef = React.useRef<ReturnType<typeof setTimeout>>();
+  const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const showToast = React.useCallback((message: string, type: ToastType = "success") => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
