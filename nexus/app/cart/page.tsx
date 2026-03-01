@@ -7,12 +7,13 @@ import { useCart } from "@/context/CartContext";
 import { useToast } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, ShoppingCart, Trash2 } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ShoppingCart, Trash2 } from "lucide-react";
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, clearCart, totalItems, totalPrice } = useCart();
   const [userId, setUserId] = useState<string | null>(null);
   const [checkingOut, setCheckingOut] = useState(false);
+  const [orderComplete, setOrderComplete] = useState(false);
   const supabase = createClient();
   const showToast = useToast();
 
@@ -51,14 +52,37 @@ export default function CartPage() {
           }
         }
       }
+      setOrderComplete(true);
       clearCart();
-      showToast("¡Compra completada! Boletos Nexus adquiridos.");
-      window.location.href = "/";
     } catch {
-      showToast("Error inesperado. Intenta de nuevo.");
+      showToast("Error inesperado. Intenta de nuevo.", "error");
     } finally {
       setCheckingOut(false);
     }
+  }
+
+  if (orderComplete) {
+    return (
+      <div className="mx-auto max-w-lg space-y-6">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-100"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Volver a eventos
+        </Link>
+        <Card>
+          <CardContent className="flex flex-col items-center justify-center py-12">
+            <CheckCircle2 className="h-14 w-14 text-cyan-400 mb-4" />
+            <p className="text-xl font-semibold text-zinc-100 mb-2">¡Compra completada!</p>
+            <p className="text-zinc-400 mb-6 text-center">Tus boletos están en tu cuenta.</p>
+            <Link href="/">
+              <Button variant="neon">Ver eventos</Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   if (items.length === 0 && !checkingOut) {
