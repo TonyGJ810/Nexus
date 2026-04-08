@@ -25,6 +25,7 @@ next-env.d.ts
 
 # Helm / Kubernetes — overrides locales y paquetes; no subir kubeconfig ni secretos
 *.tgz
+helm/nexus/values-local.yaml
 values.local.yaml
 values-*-local.yaml
 *-secrets.yaml
@@ -39,3 +40,6 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+
+# Cursor (planes y estado local; no subir al repo)
+.cursor/
