@@ -13,13 +13,19 @@ export function AuthNav() {
 
   useEffect(() => {
     if (!configured) return;
-    supabase.auth.getUser().then(({ data: { user: u } }) => setUser(u ?? null));
+    let cancelled = false;
+    supabase.auth.getUser().then(({ data: { user: u } }) => {
+      if (!cancelled) setUser(u ?? null);
+    });
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_, session) =>
-      setUser(session?.user ?? null)
-    );
-    return () => subscription.unsubscribe();
+    } = supabase.auth.onAuthStateChange((_, session) => {
+      if (!cancelled) setUser(session?.user ?? null);
+    });
+    return () => {
+      cancelled = true;
+      subscription.unsubscribe();
+    };
   }, [configured, supabase.auth]);
 
   async function signOut() {

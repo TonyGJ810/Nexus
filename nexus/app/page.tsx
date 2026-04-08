@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
@@ -25,12 +26,14 @@ export default async function HomePage() {
         <div className="relative">
           {featured ? (
             <div className="grid gap-6 md:grid-cols-2 md:gap-8">
-              <div className="aspect-video overflow-hidden rounded-xl bg-zinc-800/50">
+              <div className="relative aspect-video overflow-hidden rounded-xl bg-zinc-800/50">
                 {featured.image_url ? (
-                  <img
+                  <Image
                     src={featured.image_url}
                     alt={featured.title}
-                    className="h-full w-full object-cover"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 ) : (
                   <div className="flex h-full items-center justify-center text-zinc-500">

@@ -3,12 +3,14 @@ node_modules/
 
 # Environment (nunca subir secretos)
 .env
-.env.local
-.env*.local
+.env.*
+!.env.example
+!.env*.example
 
 # Next.js
 .next/
 out/
+dist/
 
 # Vercel
 .vercel
@@ -16,7 +18,24 @@ out/
 # Build / cache
 *.tsbuildinfo
 next-env.d.ts
+.turbo/
+
+# Docker (caché local opcional si usas buildx en el repo)
+# .docker/
+
+# Helm / Kubernetes — overrides locales y paquetes; no subir kubeconfig ni secretos
+*.tgz
+values.local.yaml
+values-*-local.yaml
+*-secrets.yaml
+kubeconfig
+*.kubeconfig
+.kube/
 
 # Sistema y IDE
 .DS_Store
+Thumbs.db
 *.log
+.idea/
+*.swp
+*.swo

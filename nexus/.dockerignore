@@ -1,0 +1,43 @@
+node_modules
+.next
+out
+dist
+build
+coverage
+.nyc_output
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Docs y herramientas locales (no necesarios en runtime)
+README.md
+docs
+*.md
+!package.json
+
+# Supabase local / migraciones no usadas en la imagen de la app
+supabase
+
+# Scripts de desarrollo
+scripts
+
+# Tests (si se añaden)
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+__tests__

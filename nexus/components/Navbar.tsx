@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { AuthNav } from "@/components/AuthNav";
 import { CartNav } from "@/components/CartNav";
 import { AdminNavLink } from "@/components/AdminNavLink";
+import { MisBoletosNavLink } from "@/components/MisBoletosNavLink";
 
 export function Navbar() {
   return (
@@ -23,6 +24,7 @@ export function Navbar() {
               Eventos
             </Button>
           </Link>
+          <MisBoletosNavLink />
           <AdminNavLink />
           <CartNav />
           <AuthNav />

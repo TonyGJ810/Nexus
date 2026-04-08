@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { EventCard } from "@/components/EventCard";
 import { Button } from "@/components/ui/button";
 import type { Event } from "@/lib/types";
@@ -9,10 +9,17 @@ const CATEGORIES = ["todos", "music", "conference", "party", "sports", "general"
 
 export function EventsGrid({ events }: { events: Event[] }) {
   const [category, setCategory] = useState("todos");
-  const filtered =
-    category === "todos"
-      ? events
-      : events.filter((e) => e.category === category);
+  const filtered = useMemo(
+    () =>
+      category === "todos"
+        ? events
+        : events.filter((e) => e.category === category),
+    [events, category]
+  );
+  const handleCategoryClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    const c = (e.currentTarget as HTMLButtonElement).dataset.category;
+    if (c) setCategory(c);
+  }, []);
 
   return (
     <section>
@@ -27,7 +34,8 @@ export function EventsGrid({ events }: { events: Event[] }) {
               variant={category === c ? "neon" : "ghost"}
               size="sm"
               type="button"
-              onClick={() => setCategory(c)}
+              data-category={c}
+              onClick={handleCategoryClick}
             >
               {c === "todos" ? "Todos" : c}
             </Button>

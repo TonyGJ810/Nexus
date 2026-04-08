@@ -1,0 +1,39 @@
+# Valores por defecto para Nexus en Kubernetes (Minikube, Kind, etc.)
+
+replicaCount: 1
+
+image:
+  repository: nexus
+  tag: local
+  # Minikube con imagen local: Never. Con GHCR u otro registry: IfNotPresent o Always
+  pullPolicy: IfNotPresent
+
+# Las variables NEXT_PUBLIC_* aquí alimentan el proceso Node en runtime (SSR, server).
+# El bundle del cliente ya lleva los valores usados en docker build; para cambiarlos hay que reconstruir la imagen.
+env:
+  NEXT_PUBLIC_SUPABASE_URL: ""
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ""
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations: {}
+  hosts:
+    - host: nexus.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi

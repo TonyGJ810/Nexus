@@ -1,5 +1,7 @@
 "use client";
 
+import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,17 +10,19 @@ import { Calendar, Ticket } from "lucide-react";
 import { ComprarBoletoButton } from "@/components/ComprarBoletoButton";
 import type { Event } from "@/lib/types";
 
-export function EventCard({ event }: { event: Event }) {
+function EventCardInner({ event }: { event: Event }) {
   return (
     <Card className="group flex flex-col transition-all duration-300 hover:scale-[1.05] hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)]">
       <Link href={`/events/${event.id}`} className="block">
         <div className="relative aspect-video overflow-hidden bg-zinc-900">
           {event.image_url ? (
             <>
-              <img
+              <Image
                 src={event.image_url}
                 alt={event.title}
-                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               />
               <div className="absolute inset-0 image-overlay pointer-events-none" />
             </>
@@ -71,3 +75,5 @@ export function EventCard({ event }: { event: Event }) {
     </Card>
   );
 }
+
+export const EventCard = React.memo(EventCardInner);

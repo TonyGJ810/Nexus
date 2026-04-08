@@ -5,6 +5,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import type { CartItem } from "@/lib/cart-types";
@@ -85,21 +86,23 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const clearCart = useCallback(() => setItems([]), []);
 
-  const totalItems = items.reduce((s, i) => s + i.quantity, 0);
-  const totalPrice = items.reduce((s, i) => s + i.price * i.quantity, 0);
+  const totalItems = useMemo(() => items.reduce((s, i) => s + i.quantity, 0), [items]);
+  const totalPrice = useMemo(() => items.reduce((s, i) => s + i.price * i.quantity, 0), [items]);
+  const value = useMemo(
+    () => ({
+      items,
+      addItem,
+      removeItem,
+      updateQuantity,
+      clearCart,
+      totalItems,
+      totalPrice,
+    }),
+    [items, addItem, removeItem, updateQuantity, clearCart, totalItems, totalPrice]
+  );
 
   return (
-    <CartContext.Provider
-      value={{
-        items,
-        addItem,
-        removeItem,
-        updateQuantity,
-        clearCart,
-        totalItems,
-        totalPrice,
-      }}
-    >
+    <CartContext.Provider value={value}>
       {children}
     </CartContext.Provider>
   );

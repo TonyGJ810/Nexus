@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback } from "react";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
@@ -25,14 +26,14 @@ export function ComprarBoletoButton({
   const { addItem } = useCart();
   const showToast = useToast();
 
-  function handleClick() {
+  const handleClick = useCallback(() => {
     if (stock <= 0) {
       showToast("No hay stock disponible.", "error");
       return;
     }
     addItem({ eventId, quantity: 1, title, price });
     showToast("Añadido al carrito");
-  }
+  }, [addItem, showToast, eventId, title, price, stock]);
 
   return (
     <Button

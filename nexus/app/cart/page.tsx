@@ -7,7 +7,7 @@ import { useCart } from "@/context/CartContext";
 import { useToast } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, CheckCircle2, ShoppingCart, Trash2 } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ShoppingCart, Ticket, Trash2 } from "lucide-react";
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, clearCart, totalItems, totalPrice } = useCart();
@@ -18,9 +18,11 @@ export default function CartPage() {
   const showToast = useToast();
 
   useEffect(() => {
+    let cancelled = false;
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setUserId(session?.user?.id ?? null);
+      if (!cancelled) setUserId(session?.user?.id ?? null);
     });
+    return () => { cancelled = true; };
   }, [supabase.auth]);
 
   async function handleCheckout() {
@@ -76,9 +78,19 @@ export default function CartPage() {
             <CheckCircle2 className="h-14 w-14 text-cyan-400 mb-4" />
             <p className="text-xl font-semibold text-zinc-100 mb-2">¡Compra completada!</p>
             <p className="text-zinc-400 mb-6 text-center">Tus boletos están en tu cuenta.</p>
-            <Link href="/">
-              <Button variant="neon">Ver eventos</Button>
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+              <Link href="/mis-boletos" className="w-full sm:w-auto">
+                <Button variant="neon" className="w-full gap-2">
+                  <Ticket className="h-4 w-4" />
+                  Ver mis boletos
+                </Button>
+              </Link>
+              <Link href="/" className="w-full sm:w-auto">
+                <Button variant="glass" className="w-full">
+                  Ver eventos
+                </Button>
+              </Link>
+            </div>
           </CardContent>
         </Card>
       </div>
