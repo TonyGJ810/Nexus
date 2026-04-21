@@ -1,0 +1,38 @@
+# Copia este archivo a values-local.yaml y rellena los valores:
+#   Copy-Item .\helm\nexus\values-local.example.yaml .\helm\nexus\values-local.yaml
+# values-local.yaml está en .gitignore para no subir claves a Git.
+
+replicaCount: 1
+
+image:
+  repository: nexus
+  tag: local
+  pullPolicy: Never
+
+env:
+  NEXT_PUBLIC_SUPABASE_URL: "https://TU-PROYECTO.supabase.co"
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: "TU_ANON_KEY"
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations: {}
+  hosts:
+    - host: nexus.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi

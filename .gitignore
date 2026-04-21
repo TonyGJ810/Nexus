@@ -43,3 +43,6 @@ Thumbs.db
 
 # Cursor (planes y estado local; no subir al repo)
 .cursor/
+
+# Markdown
+*.md
