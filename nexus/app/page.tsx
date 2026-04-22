@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar, Ticket } from "lucide-react";
 import { EventCard } from "@/components/EventCard";
 import { EventsGrid } from "@/components/EventsGrid";
-//prueba
+//prueba 2
 
 export default async function HomePage() {
   const supabase = await createClient();
