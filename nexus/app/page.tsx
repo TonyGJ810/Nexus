@@ -16,9 +16,85 @@ export default async function HomePage() {
         .from("events")
         .select("*")
         .order("date", { ascending: true });
+      // #region agent log
+      {
+        const payload = {
+          sessionId: "1df461",
+          runId: "pre-fix",
+          hypothesisId: "H2-H3",
+          location: "page.tsx:HomePage",
+          message: "events query result",
+          data: {
+            hasClient: true,
+            hasError: Boolean(error),
+            errorCode: error?.code ?? null,
+            errorMessage: error?.message ?? null,
+            rowCount: Array.isArray(data) ? data.length : 0,
+          },
+          timestamp: Date.now(),
+        };
+        void fetch("http://127.0.0.1:7558/ingest/2bcc853a-4cfa-4b36-b20c-545df7596b0f", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Debug-Session-Id": "1df461",
+          },
+          body: JSON.stringify(payload),
+        }).catch(() => {});
+        console.error("[nexus-debug]", JSON.stringify(payload));
+      }
+      // #endregion
       if (!error && data) events = data;
+    } else {
+      // #region agent log
+      {
+        const payload = {
+          sessionId: "1df461",
+          runId: "pre-fix",
+          hypothesisId: "H1",
+          location: "page.tsx:HomePage",
+          message: "no supabase client, skipping query",
+          data: { hasClient: false },
+          timestamp: Date.now(),
+        };
+        void fetch("http://127.0.0.1:7558/ingest/2bcc853a-4cfa-4b36-b20c-545df7596b0f", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Debug-Session-Id": "1df461",
+          },
+          body: JSON.stringify(payload),
+        }).catch(() => {});
+        console.error("[nexus-debug]", JSON.stringify(payload));
+      }
+      // #endregion
     }
-  } catch {
+  } catch (e) {
+    // #region agent log
+    {
+      const payload = {
+        sessionId: "1df461",
+        runId: "pre-fix",
+        hypothesisId: "H4",
+        location: "page.tsx:HomePage",
+        message: "exception in home events load",
+        data: {
+          errName: e instanceof Error ? e.name : typeof e,
+          errMessage: e instanceof Error ? e.message : String(e),
+        },
+        timestamp: Date.now(),
+      };
+      void fetch("http://127.0.0.1:7558/ingest/2bcc853a-4cfa-4b36-b20c-545df7596b0f", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Debug-Session-Id": "1df461",
+        },
+        body: JSON.stringify(payload),
+      }).catch(() => {});
+      console.error("[nexus-debug]", JSON.stringify(payload));
+    }
+    // #endregion
     events = [];
   }
   const featured = events[0];

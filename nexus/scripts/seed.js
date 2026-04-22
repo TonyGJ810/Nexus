@@ -1,18 +1,28 @@
 /**
  * Script de seed para Nexus - Carga masiva de events y tickets en Supabase.
- * Lee SUPABASE_URL y SUPABASE_SERVICE_ROLE_KEY desde .env.local o variables de entorno.
+ * Lee SUPABASE_URL (o NEXT_PUBLIC_SUPABASE_URL) y SUPABASE_SERVICE_ROLE_KEY desde .env.local o entorno.
+ * Carga primero la raíz del repo y luego nexus/.env.local (esta sobrescribe claves repetidas).
  *
  * Ejecutar: npm run seed (desde la carpeta nexus)
  */
 
 import { config } from "dotenv";
-config({ path: ".env.local" });
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const nexusRoot = path.resolve(__dirname, "..");
+const repoRoot = path.resolve(__dirname, "../..");
+
+config({ path: path.join(repoRoot, ".env.local") });
+config({ path: path.join(nexusRoot, ".env.local"), override: true });
 
 import { createClient } from "@supabase/supabase-js";
 import { faker } from "@faker-js/faker";
 
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const SUPABASE_URL =
+  process.env.SUPABASE_URL?.trim() || process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() || "";
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || "";
 const FIXED_USER_ID = "ecba6296-40dc-491e-bd3e-efac6fbf0ca8";
 
 const EVENTS_COUNT = 50;
@@ -29,7 +39,7 @@ function log(msg) {
 function validateEnv() {
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     console.error("Error: Faltan variables de entorno.");
-    console.error("  SUPABASE_URL: " + (SUPABASE_URL ? "OK" : "NO DEFINIDA"));
+    console.error("  SUPABASE_URL / NEXT_PUBLIC_SUPABASE_URL: " + (SUPABASE_URL ? "OK" : "NO DEFINIDA"));
     console.error("  SUPABASE_SERVICE_ROLE_KEY: " + (SUPABASE_SERVICE_ROLE_KEY ? "OK" : "NO DEFINIDA"));
     process.exit(1);
   }

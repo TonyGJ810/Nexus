@@ -10,10 +10,12 @@ npm install
 npm run dev
 ```
 
-Crea un archivo `.env.local` con (o copia desde `.env.example`):
+Crea **`nexus/.env.local`** (no uses solo la raíz del monorepo: Next solo carga env junto a `next.config.ts`):
 
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- Opcional (mismo proyecto): `SUPABASE_URL`, `SUPABASE_ANON_KEY` para SSR coherente.
+- Para `npm run seed`: `SUPABASE_SERVICE_ROLE_KEY` (clave **service_role** en Supabase; nunca en `NEXT_PUBLIC_*`).
 
 ## Desplegar en Vercel
 

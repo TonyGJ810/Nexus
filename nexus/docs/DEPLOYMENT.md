@@ -86,11 +86,36 @@ Esa pantalla es de **Vercel**, no de tu app: significa que no encuentra nada que
 
 ---
 
+## CI: imagen Docker y GitHub Actions
+
+El workflow [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) construye la imagen con argumentos de build:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
+Deben existir como **Repository secrets** en GitHub: el repositorio → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**. Usa exactamente esos nombres (coinciden con `${{ secrets.… }}` en el workflow).
+
+Si rotas las claves en Supabase, actualiza ambos secretos y vuelve a generar la imagen (por ejemplo un `push` a `main` que toque `nexus/**` o el workflow, o un **Run workflow** manual). Si no, el bundle del cliente seguirá llevando valores antiguos.
+
+---
+
+## Tras rotar o sustituir API keys (Supabase)
+
+1. **Local:** mantén todo en **`nexus/.env.local`** (Next solo carga env desde la carpeta `nexus/`). Incluye `NEXT_PUBLIC_*` y, si quieres SSR coherente, `SUPABASE_URL` / `SUPABASE_ANON_KEY` con los mismos valores del proyecto.
+2. **Kubernetes:** actualiza **`helm/nexus/values-local.yaml`** (no se sube a Git) con la misma URL y anon key; vuelve a desplegar el chart.
+3. **GitHub Actions:** actualiza los dos secretos anteriores y reconstruye la imagen.
+4. **Vercel:** **Settings** → **Environment Variables** → mismas `NEXT_PUBLIC_*` en los entornos que uses → **Redeploy**.
+5. **Supabase** → **Authentication** → **URL Configuration:** **Site URL** y **Redirect URLs** deben incluir cada origen desde el que los usuarios usan la app (por ejemplo `http://localhost:3000`, la URL de Vercel, o el host del ingress tipo `https://nexus.local`).
+6. Comprueba en **Project Settings** → **API** que la **Project URL** y las keys (anon / service_role) corresponden al mismo proyecto que ves en la barra de Supabase.
+
+---
+
 ## Resumen rápido
 
 | Dónde        | Qué hacer |
 |-------------|-----------|
 | GitHub      | Subir código sin `.env` / `.env.local`. |
+| GitHub      | Secretos `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` para el workflow Docker. |
 | Vercel      | Root Directory = **nexus** (obligatorio para evitar 404). |
 | Vercel      | Añadir `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY`. |
 | Supabase    | (Opcional) Site URL / Redirect URLs con la URL de Vercel. |
