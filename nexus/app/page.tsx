@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
@@ -6,16 +5,22 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar, Ticket } from "lucide-react";
 import { EventCard } from "@/components/EventCard";
 import { EventsGrid } from "@/components/EventsGrid";
-//prueba 2
+import type { Event } from "@/lib/types";
 
 export default async function HomePage() {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("events")
-    .select("*")
-    .order("date", { ascending: true });
-
-  const events = data ?? [];
+  let events: Event[] = [];
+  try {
+    const supabase = createClient();
+    if (supabase) {
+      const { data, error } = await supabase
+        .from("events")
+        .select("*")
+        .order("date", { ascending: true });
+      if (!error && data) events = data;
+    }
+  } catch {
+    events = [];
+  }
   const featured = events[0];
   const rest = events.slice(1, 7);
 
@@ -29,12 +34,10 @@ export default async function HomePage() {
             <div className="grid gap-6 md:grid-cols-2 md:gap-8">
               <div className="relative aspect-video overflow-hidden rounded-xl bg-zinc-800/50">
                 {featured.image_url ? (
-                  <Image
+                  <img
                     src={featured.image_url}
                     alt={featured.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="absolute inset-0 h-full w-full object-cover"
                   />
                 ) : (
                   <div className="flex h-full items-center justify-center text-zinc-500">

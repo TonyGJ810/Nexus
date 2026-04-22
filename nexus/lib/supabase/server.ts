@@ -1,8 +1,11 @@
-import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+import {
+  createClient as createSupabaseClient,
+  type SupabaseClient,
+} from "@supabase/supabase-js";
 
 /**
  * En Docker/K8s, NEXT_PUBLIC_* puede quedar vacío en SSR si el build no las inyectó.
- * SUPABASE_URL / SUPABASE_ANON_KEY se leen en runtime (p. ej. desde Helm) sin ese problema.
+ * SUPABASE_URL / SUPABASE_ANON_KEY se leen en runtime (p. ej. desde Helm).
  */
 function supabaseUrl(): string {
   return (
@@ -20,8 +23,16 @@ function supabaseAnonKey(): string {
   );
 }
 
-export function createClient() {
-  const url = supabaseUrl();
-  const key = supabaseAnonKey();
-  return createSupabaseClient(url, key);
+/**
+ * Cliente Supabase en servidor. Devuelve `null` si faltan URL/key (evita 500 por supabase-js).
+ */
+export function createClient(): SupabaseClient | null {
+  const url = supabaseUrl().trim();
+  const key = supabaseAnonKey().trim();
+  if (!url || !key) return null;
+  try {
+    return createSupabaseClient(url, key);
+  } catch {
+    return null;
+  }
 }

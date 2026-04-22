@@ -12,7 +12,8 @@ export default async function EventPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = await createClient();
+  const supabase = createClient();
+  if (!supabase) notFound();
   const { data: event, error } = await supabase
     .from("events")
     .select("*")
