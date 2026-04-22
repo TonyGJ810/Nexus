@@ -33,17 +33,30 @@ spec:
               value: {{ $v | quote }}
             {{- end }}
           {{- end }}
+          {{- if eq (.Values.probes.type | default "http") "tcp" }}
+          livenessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: {{ .Values.probes.livenessInitialDelaySeconds | default 30 }}
+            periodSeconds: {{ .Values.probes.livenessPeriodSeconds | default 20 }}
+          readinessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: {{ .Values.probes.readinessInitialDelaySeconds | default 10 }}
+            periodSeconds: {{ .Values.probes.readinessPeriodSeconds | default 10 }}
+          {{- else }}
           livenessProbe:
             httpGet:
-              path: /api/health
+              path: {{ .Values.probes.httpPath | default "/api/health" }}
               port: http
-            initialDelaySeconds: 15
-            periodSeconds: 20
+            initialDelaySeconds: {{ .Values.probes.livenessInitialDelaySeconds | default 20 }}
+            periodSeconds: {{ .Values.probes.livenessPeriodSeconds | default 20 }}
           readinessProbe:
             httpGet:
-              path: /api/health
+              path: {{ .Values.probes.httpPath | default "/api/health" }}
               port: http
-            initialDelaySeconds: 10
-            periodSeconds: 10
+            initialDelaySeconds: {{ .Values.probes.readinessInitialDelaySeconds | default 15 }}
+            periodSeconds: {{ .Values.probes.readinessPeriodSeconds | default 10 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

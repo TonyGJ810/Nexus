@@ -32,6 +32,10 @@ ingress:
           pathType: Prefix
   tls: []
 
+# Opcional: tcp si la imagen aún no expone /api/health estable; http cuando CI publique build reciente.
+# probes:
+#   type: tcp
+
 resources:
   requests:
     cpu: 100m

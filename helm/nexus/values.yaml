@@ -36,6 +36,16 @@ ingress:
           pathType: Prefix
   tls: []
 
+# http: GET en httpPath (p. ej. /api/health) cuando la imagen incluye esa ruta.
+# tcp: solo comprueba que el puerto escuche (útil con imagen antigua o si HTTP devuelve 5xx).
+probes:
+  type: http
+  httpPath: /api/health
+  livenessInitialDelaySeconds: 20
+  livenessPeriodSeconds: 20
+  readinessInitialDelaySeconds: 15
+  readinessPeriodSeconds: 10
+
 resources:
   requests:
     cpu: 100m
