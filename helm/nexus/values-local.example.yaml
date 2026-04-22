@@ -12,6 +12,9 @@ image:
 env:
   NEXT_PUBLIC_SUPABASE_URL: "https://TU-PROYECTO.supabase.co"
   NEXT_PUBLIC_SUPABASE_ANON_KEY: "TU_ANON_KEY"
+  # Mismos valores: lectura runtime en SSR (recomendado en Kubernetes/Docker).
+  SUPABASE_URL: "https://TU-PROYECTO.supabase.co"
+  SUPABASE_ANON_KEY: "TU_ANON_KEY"
 
 service:
   type: ClusterIP

@@ -12,11 +12,13 @@ image:
 # kubectl create secret docker-registry ghcr-login --docker-server=ghcr.io ...
 imagePullSecrets: []
 
-# Las variables NEXT_PUBLIC_* aquí alimentan el proceso Node en runtime (SSR, server).
-# El bundle del cliente ya lleva los valores usados en docker build; para cambiarlos hay que reconstruir la imagen.
+# NEXT_PUBLIC_* y, para SSR en K8s sin depender solo del build, SUPABASE_URL / SUPABASE_ANON_KEY
+# (mismos valores que en .env / values-local). Ver nexus/lib/supabase/server.ts.
 env:
-  NEXT_PUBLIC_SUPABASE_URL: "https://pgwetjwfjqupfibssxor.supabase.co"
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBnd2V0andmanF1cGZpYnNzeG9yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA0MzIxNTEsImV4cCI6MjA4NjAwODE1MX0.086JchpRq-wA1rDIqZ17unk8DuYywXewQvk14V2SPwQ"
+  NEXT_PUBLIC_SUPABASE_URL: ""
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ""
+  SUPABASE_URL: ""
+  SUPABASE_ANON_KEY: ""
 
 service:
   type: ClusterIP
