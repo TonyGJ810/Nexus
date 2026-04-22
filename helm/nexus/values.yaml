@@ -8,11 +8,15 @@ image:
   # Minikube con imagen local: Never. Con GHCR u otro registry: IfNotPresent o Always
   pullPolicy: IfNotPresent
 
+# Opcional: si la imagen está en GHCR privado, crea un secret y listalo aquí.
+# kubectl create secret docker-registry ghcr-login --docker-server=ghcr.io ...
+imagePullSecrets: []
+
 # Las variables NEXT_PUBLIC_* aquí alimentan el proceso Node en runtime (SSR, server).
 # El bundle del cliente ya lleva los valores usados en docker build; para cambiarlos hay que reconstruir la imagen.
 env:
-  NEXT_PUBLIC_SUPABASE_URL: ""
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: ""
+  NEXT_PUBLIC_SUPABASE_URL: "https://pgwetjwfjqupfibssxor.supabase.co"
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBnd2V0andmanF1cGZpYnNzeG9yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA0MzIxNTEsImV4cCI6MjA4NjAwODE1MX0.086JchpRq-wA1rDIqZ17unk8DuYywXewQvk14V2SPwQ"
 
 service:
   type: ClusterIP
