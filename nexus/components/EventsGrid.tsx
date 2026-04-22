@@ -54,4 +54,5 @@ export function EventsGrid({ events }: { events: Event[] }) {
       )}
     </section>
   );
+  //prueba
 }
